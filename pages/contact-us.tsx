@@ -5,7 +5,6 @@ import styles from '../styles/Home.module.css'
 import profilePic from '../image/leftSide.png'
 import profilePic1 from '../image/rightSide.png'
 import profilePic2 from '../image/Logo1.png'
-import { PhoneInput } from './phone-input'
 import { useState } from 'react'
 
 
