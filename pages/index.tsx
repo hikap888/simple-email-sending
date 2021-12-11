@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
-import profilePic from '../image/Logo5.png'
+import FirstLogo from '../image/FirstLogo.png'
 import { useEffect } from 'react'
 const Home: NextPage = () => {
   const router = useRouter()
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
 
       <main className="w-full h-screen flex justify-center items-center">
         <Image
-          src={profilePic}
+          src={FirstLogo}
           alt="Picture of the author"
         // width={500} automatically provided
         // height={500} automatically provided

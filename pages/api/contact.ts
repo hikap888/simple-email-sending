@@ -1,9 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-
+require('https').globalAgent.options.ca = require('ssl-root-cas').create();
 export default function (req: any, res: any) {
   require('dotenv').config()
-  // const PASSWORD = process.env.password
+  const PASSWORD = process.env.password
   let nodemailer = require('nodemailer')
   const transporter = nodemailer.createTransport({
     port: 465,
@@ -13,10 +11,13 @@ export default function (req: any, res: any) {
       pass: process.env.password,
     },
     secure: true,
+    tls: {
+      rejectUnauthorized: false,
+    },
   })
   const mailData = {
     from: 'support@ssanctus.com',
-    to: 'allee227888@gmail.com',
+    to: 'saulsaidgonzalez@ssanctus.com',
     subject: `Message From ${req.body.name}`,
     text: req.body.message + " | Sent from: " + req.body.email,
     html: `<div>${req.body.phone}</div><p>Sent from:

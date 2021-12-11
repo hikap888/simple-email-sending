@@ -6,6 +6,8 @@ import { PhoneInput } from './component/phone-input'
 import Image from 'next/image'
 import LeftImage from '../image/leftSide.png'
 import RightImage from '../image/rightSide.png'
+import LeftImageSm from '../image/leftSide-sm.png'
+import RightImageSm from '../image/rightSide-sm.png'
 import LogoImage from '../image/Logo.png'
 import { useState } from 'react'
 import { useFormik } from 'formik';
@@ -61,6 +63,7 @@ const ContactUs: NextPage = () => {
         setSubmitted(true)
         setName('')
         setEmail('')
+        setPhone('')
       }
     })
   }
@@ -70,25 +73,25 @@ const ContactUs: NextPage = () => {
       <meta name="description" content="<description here>" />
     </Head>
     <Layout>
-      <section className="pt-65 pb-80">
+      <section className="">
         <div className="container mx-auto">
-          <div className="flex msm:flex-col sm:flex-row md:justify-around msm:justify-center md:items-center">
-            <div className="flex justify-center"><Image src={LeftImage} alt="ssanctus" /></div>
-            <div>
+          <div className="flex msm:flex-col md:flex-row md:justify-around msm:justify-center md:items-center w-auto">
+            <div className="flex justify-center w-1/3 msm:w-auto mmd:w-auto mlg:w-auto "><Image src={LeftImageSm} alt="ssanctus" /></div>
+            <div className="w-1/3 msm:w-auto mmd:w-auto mlg:w-auto">
               <div className="text-center"><Image src={LogoImage} alt="ssanctus" /></div>
-              <div className="border min-w-min px-10 py-10">
-                <p className="text-center font-family: Segoe UI text-3xl">To -be, innovative, influential. S.Sanctus is representing fashion under a new vision</p>
+              <div className="border min-w-min px-4 py-10">
+                <p className="text-center font-family: Segoe UI text-3xl pb-12 mb-8 border-b-4 border-black">To -be, innovative, influential. S.Sanctus is representing fashion under a new vision</p>
                 <form className="md:min-w-3/5 mx-auto">
                   <Input name="fullName" placeholder="Walter White" label="Full Name" value={form.values.fullName} onChange={form.handleChange} />
                   <Input type="email" name="email" placeholder="someone@example.com" value={form.values.email} label="Email Address" onChange={form.handleChange} />
-                  <PhoneInput name="phone" placeholder="(123) 456 7890" label="Phone Number" value={form.values.phone} onChange={form.handleChange} />
+                  <PhoneInput name="phone" placeholder="(+000)(123) 456 7890" label="Phone Number" value={form.values.phone} onChange={form.handleChange} />
                   <div className="flex justify-center pt-30">
                     <button className="btn btn-warning btn-md bg-green-400 px-10 py-5 rounded-lg font-extrabold text-2xl" disabled={!(form.isValid && form.dirty)}>Submit</button>
                   </div>
                 </form>
               </div>
             </div>
-            <div className="flex justify-center"><Image src={RightImage} alt="ssanctus" /></div>
+            <div className="flex justify-center msm:w-auto mmd:w-auto mlg:w-auto "><Image src={RightImageSm} alt="ssanctus" /></div>
           </div>
         </div>
       </section>
