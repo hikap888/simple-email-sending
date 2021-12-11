@@ -1,31 +1,52 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { Layout } from './component/layout/layout'
+import { Input } from './component/input'
+import { PhoneInput } from './component/phone-input'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import profilePic from '../image/leftSide.png'
-import profilePic1 from '../image/rightSide.png'
-import profilePic2 from '../image/Logo1.png'
+import LeftImage from '../image/leftSide.png'
+import RightImage from '../image/rightSide.png'
+import LogoImage from '../image/Logo.png'
 import { useState } from 'react'
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 
-
+interface DataProps {
+  name: string,
+  email: string,
+  phone: string
+}
 
 const ContactUs: NextPage = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [body, setBody] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
+  const schema = Yup.object().shape({
+    fullName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+    phone: Yup.string().required('Required'),
+  });
+  const form = useFormik({
+    initialValues: {
+      fullName: '',
+      email: '',
+      phone: '',
+    },
+    validationSchema: schema,
+    onSubmit: async values => {
+      const data: DataProps = {
+        name: values.fullName,
+        email: values.email,
+        phone: values.phone
+      }
+      handleSubmit(data);
+    },
+  });
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault()
-    console.log('Sending')
-    const data = {
-      name,
-      email,
-      phone
-    }
+  const handleSubmit = (data: DataProps) => {
     fetch('/api/contact', {
       method: 'POST',
       headers: {
@@ -40,41 +61,72 @@ const ContactUs: NextPage = () => {
         setSubmitted(true)
         setName('')
         setEmail('')
-        setBody('')
       }
     })
   }
-  return (
-
-    <div>
-      <main className="w-full h-screen flex justify-center items-center">
-        <Image src={profilePic} alt="left" />
-        <div className="flex flex-col">
-          <Image src={profilePic2} alt="left" className="mx-4" />
-          <div className="border-solid border-2 border-black h-full w-full flex flex-col">
-            <div className="border-b-4 border-solid border-black w-full my-3">
-              <p> Advertis you Company</p>
-            </div>
+  return (<>
+    <Head>
+      <title>S.Sanctus: --sub title here-- </title>
+      <meta name="description" content="<description here>" />
+    </Head>
+    <Layout>
+      <section className="pt-65 pb-80">
+        <div className="container mx-auto">
+          <div className="flex msm:flex-col sm:flex-row md:justify-around msm:justify-center md:items-center">
+            <div className="flex justify-center"><Image src={LeftImage} alt="ssanctus" /></div>
             <div>
-              <h2 className="py-2">Full name</h2>
-              <input type="text" onChange={(e) => { setName(e.target.value) }} className="w-full border-2 border-black text-gray-900 focus:outline-none text-sm" placeholder="name" />
+              <div className="text-center"><Image src={LogoImage} alt="ssanctus" /></div>
+              <div className="border min-w-min px-10 py-10">
+                <p className="text-center font-family: Segoe UI text-3xl">To -be, innovative, influential. S.Sanctus is representing fashion under a new vision</p>
+                <form className="md:min-w-3/5 mx-auto">
+                  <Input name="fullName" placeholder="Walter White" label="Full Name" value={form.values.fullName} onChange={form.handleChange} />
+                  <Input type="email" name="email" placeholder="someone@example.com" value={form.values.email} label="Email Address" onChange={form.handleChange} />
+                  <PhoneInput name="phone" placeholder="(123) 456 7890" label="Phone Number" value={form.values.phone} onChange={form.handleChange} />
+                  <div className="flex justify-center pt-30">
+                    <button className="btn btn-warning btn-md bg-green-400 px-10 py-5 rounded-lg font-extrabold text-2xl" disabled={!(form.isValid && form.dirty)}>Submit</button>
+                  </div>
+                </form>
+              </div>
             </div>
-            <div>
-              <h2 className="py-2">Email</h2>
-              <input type="text" onChange={(e) => { setEmail(e.target.value) }} className="w-full border-2 border-black text-gray-900 focus:outline-none text-sm" placeholder="email" />
-            </div>
-            <div>
-              <h2 className="py-2">Phone Number</h2>
-              <input type="number" onChange={(e) => { setPhone(e.target.value) }} className="w-full border-2 border-black text-gray-900 focus:outline-none text-sm" placeholder="phone number" />
-            </div>
-            <div className="flex justify-center">
-              <input type='submit' onClick={(e) => { handleSubmit(e) }} />
-            </div>
+            <div className="flex justify-center"><Image src={RightImage} alt="ssanctus" /></div>
           </div>
         </div>
-        <Image src={profilePic1} alt="right" />
-      </main >
-    </div >
+      </section>
+    </Layout>
+  </>
+
+    // <div>
+    //   <main className="w-full h-screen flex justify-center items-center">
+    //     <Image src={profilePic} alt="left" />
+    //     <div className="flex flex-col">
+    //       <Image src={profilePic2} alt="left" className="" />
+    //       <div className="border-solid border-2 border-black h-full w-full flex flex-col px-3 py-3">
+    //         <div className="border-b-4 border-solid border-black w-full my-3">
+    //           <div>
+    //             <p className="font-4">To - Be, innovative,influential.<br />S.Sanctus is representing fashion under a new vision.</p>
+    //           </div>
+    //         </div>
+    //         <div>
+    //           <h2 className="py-2">Full name</h2>
+    //           <input type="text" onChange={(e) => { setName(e.target.value) }} className="w-full border-2 border-black text-gray-900 focus:outline-none text-sm" placeholder="name" />
+    //         </div>
+    //         <div>
+    //           <h2 className="py-2">Email</h2>
+    //           <input type="text" onChange={(e) => { setEmail(e.target.value) }} className="w-full border-2 border-black text-gray-900 focus:outline-none text-sm" placeholder="email" />
+    //         </div>
+    //         <div>
+    //           <h2 className="py-2">Phone Number</h2>
+    //           <input type="text" onChange={(e) => { setPhone(e.target.value) }} className="w-full border-2 border-black text-gray-900 focus:outline-none text-sm" placeholder="phone number" />
+    //         </div>
+    //         <div className="flex justify-center">
+    //           <input type='submit' onClick={(e) => { handleSubmit(e) }} />
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <Image src={profilePic1} alt="right" />
+    //   </main >
+    // </div >
+
   )
 }
 
